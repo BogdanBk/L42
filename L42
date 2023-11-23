@@ -1,0 +1,145 @@
+using System;
+using System.Collections.Generic;
+
+// Базовий клас Комп'ютер
+public class Computer
+{
+    public string IPAddress { get; set; }
+    public int Power { get; set; }
+    public string OperatingSystem { get; set; }
+
+    public Computer(string ipAddress, int power, string operatingSystem)
+    {
+        IPAddress = ipAddress;
+        Power = power;
+        OperatingSystem = operatingSystem;
+    }
+}
+
+// Інтерфейс для з'єднання та передачі даних
+public interface IConnectable
+{
+    void Connect(Computer target);
+    void Disconnect(Computer target);
+    void TransmitData(Computer target, string data);
+}
+
+// Клас Сервер
+public class Server : Computer, IConnectable
+{
+    public int StorageCapacity { get; set; }
+
+    public Server(string ipAddress, int power, string operatingSystem, int storageCapacity)
+        : base(ipAddress, power, operatingSystem)
+    {
+        StorageCapacity = storageCapacity;
+    }
+
+    public void Connect(Computer target)
+    {
+        Console.WriteLine($"Server {IPAddress} is connecting to {target.IPAddress}.");
+    }
+
+    public void Disconnect(Computer target)
+    {
+        Console.WriteLine($"Server {IPAddress} is disconnecting from {target.IPAddress}.");
+    }
+
+    public void TransmitData(Computer target, string data)
+    {
+        Console.WriteLine($"Server {IPAddress} is transmitting data to {target.IPAddress}: {data}");
+    }
+}
+
+// Клас Робоча станція
+public class Workstation : Computer, IConnectable
+{
+    public string UserName { get; set; }
+
+    public Workstation(string ipAddress, int power, string operatingSystem, string userName)
+        : base(ipAddress, power, operatingSystem)
+    {
+        UserName = userName;
+    }
+
+    public void Connect(Computer target)
+    {
+        Console.WriteLine($"Workstation {IPAddress} is connecting to {target.IPAddress}.");
+    }
+
+    public void Disconnect(Computer target)
+    {
+        Console.WriteLine($"Workstation {IPAddress} is disconnecting from {target.IPAddress}.");
+    }
+
+    public void TransmitData(Computer target, string data)
+    {
+        Console.WriteLine($"Workstation {IPAddress} is transmitting data to {target.IPAddress}: {data}");
+    }
+}
+
+// Клас Маршрутизатор
+public class Router : Computer, IConnectable
+{
+    public int Ports { get; set; }
+
+    public Router(string ipAddress, int power, string operatingSystem, int ports)
+        : base(ipAddress, power, operatingSystem)
+    {
+        Ports = ports;
+    }
+
+    public void Connect(Computer target)
+    {
+        Console.WriteLine($"Router {IPAddress} is connecting to {target.IPAddress}.");
+    }
+
+    public void Disconnect(Computer target)
+    {
+        Console.WriteLine($"Router {IPAddress} is disconnecting from {target.IPAddress}.");
+    }
+
+    public void TransmitData(Computer target, string data)
+    {
+        Console.WriteLine($"Router {IPAddress} is transmitting data to {target.IPAddress}: {data}");
+    }
+}
+
+// Клас Мережа
+public class Network
+{
+    private List<Computer> computers;
+
+    public Network()
+    {
+        computers = new List<Computer>();
+    }
+
+    public void AddComputer(Computer computer)
+    {
+        computers.Add(computer);
+    }
+
+    public void SimulateInteraction()
+    {
+        // Логіка взаємодії між комп'ютерами (з'єднання, передача даних, відключення) тут
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Приклад використання
+        Server server = new Server("192.168.1.1", 1000, "Windows Server", 500);
+        Workstation workstation = new Workstation("192.168.1.2", 500, "Windows 10", "User1");
+        Router router = new Router("192.168.1.3", 200, "RouterOS", 4);
+
+        Network network = new Network();
+        network.AddComputer(server);
+        network.AddComputer(workstation);
+        network.AddComputer(router);
+
+        network.SimulateInteraction();
+    }
+}
